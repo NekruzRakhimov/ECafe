@@ -9,7 +9,7 @@ def index():
     return jsonify({"status": "server is up and running..."}), 200
 
 
-@app.route('/orders', methods=["GET", "POST"])
+@app.route('/orders', methods=["GET", "POST"]) #Nosir
 def order_control():
     if request.method == 'GET':
         pass
@@ -18,7 +18,7 @@ def order_control():
         pass
 
 
-@app.route('/users', methods=['GET', 'POST'])
+@app.route('/users', methods=['GET', 'POST']) #Muhammad
 def users():
     if request.method == 'GET':
         pass
@@ -26,7 +26,7 @@ def users():
         pass
 
 
-@app.route('/menu', methods=['GET', 'POST'])
+@app.route('/menu', methods=['GET', 'POST']) # Sasha
 def menu():
     if request.method == 'GET':
         pass
@@ -34,7 +34,7 @@ def menu():
         pass
 
 
-@app.route('/tables', methods=['GET', 'POST'])
+@app.route('/tables', methods=['GET', 'POST']) #Nosir
 def tables():
     if request.method == 'GET':
         pass
