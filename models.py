@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, DateTime, Float, ForeignKey
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import relationship, DeclarativeBase
 from connection import engine
 
 # создаем базовый класс для моделей
-Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 
 class Menu(Base):
@@ -22,11 +23,13 @@ class Menu(Base):
 class OrderManagement(Base):
     __tablename__ = 'order_management'
     id = Column(Integer, primary_key=True)
+    created_at = Column(DateTime)
+    order_id = Column(Integer, unique=True)
     menu_id = Column(Integer, ForeignKey('menu.id'), nullable=False)
     order_status = Column(String(50), nullable=False)
     dish_status = Column(String(50), nullable=False)
-    table_id = Column(Integer, nullable=False)
-
+    table_id = Column(Integer, ForeignKey('table_management.id'), nullable=False)
+    personal_id = Column(Integer, ForeignKey('personal.id'), nullable=False)
     menu = relationship("Menu", backref="order_management")
 
     def __repr__(self):
@@ -38,7 +41,7 @@ class TableManagement(Base):
     id = Column(Integer, primary_key=True)
     number = Column(Integer, nullable=False)
     table = Column(String(255), nullable=False)
-    personal_id = Column(Integer, ForeignKey('your_personal_table.id'))
+    personal_id = Column(Integer, ForeignKey('personal.id'))
     personal = relationship("Personal", backref="table_management")
 
     def __repr__(self):
