@@ -25,9 +25,13 @@ class Personal(Base):
     __tablename__ = 'personal'
     id = Column(Integer, primary_key=True)
     job_title = Column(String(255), nullable=False)
+    salary = Column(Float(10), nullable=False)
     first_name = Column(String(255), nullable=False)
     last_name = Column(String(255), nullable=False)
     age = Column(Integer, nullable=False)
+    status = Column(String(100), nullable=False)  # тут показывет: Уволился, Работает,
+    created_at = Column(DateTime)
+    delete_at = Column(DateTime)
 
     def __repr__(self):
         return f"<Personal(id={self.id}, job_title={self.job_title}, first_name={self.first_name}, last_name={self.last_name}, age={self.age})>"
