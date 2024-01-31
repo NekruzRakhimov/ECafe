@@ -5,23 +5,19 @@ from sqlalchemy.orm import Session, sessionmaker
 from datetime import datetime
 
 
-class Repository:
-    def __init__(self, session: Session):
-        self.session = session
+def get_menu():
+    with Session(autoflush=False, bind=engine) as db:
+        return db.query(Menu).all()
 
-    def get_menu(self):
-        menu = self.session.query(Menu).all()
-        return menu
 
-    def create_dish(self, title, description, status_time, price):
-        def get_status(time):
-            if time > 0:
-                return "Expectation"
-            else:
-                return "Done"
+def create_dish(dish):
+    with Session(autoflush=False, bind=engine) as db:
+        db.add(dish)
+        db.commit()
 
-        status = get_status(status_time)
-        menu = Menu(title=title, description=description, status=status, status_time=status_time, price=price)
-        self.session.add(menu)
-        self.session.commit()
-        return menu
+
+def delete_dish(id):
+    with Session(autoflush=False, bind=engine) as db:
+        dish = db.query(Menu).filter(Menu.id == id).first()
+        db.delete(dish)
+        db.commit()

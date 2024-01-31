@@ -1,7 +1,7 @@
-from flask import jsonify, Blueprint, request
-from sqlalchemy.orm import Session
+from datetime import datetime
 
-from repository import Repository
+from flask import jsonify, Blueprint, request
+import repository
 from ECafe.models import Menu
 
 app = Blueprint('routes', __name__)
@@ -33,21 +33,37 @@ def users():
 @app.route('/menu', methods=['GET', 'POST']) # Sasha
 def menu():
     if request.method == 'GET':
-        session = Session
-        repository = Repository(session)
         dishes = repository.get_menu()
         serialized_dishes = []
-
         for dish in dishes:
             dish_dict = dish.__dict__
             del dish_dict["_sa_instance_state"]
             serialized_dishes.append(dish_dict)
-
         return {"menu": serialized_dishes}, 200
-    elif request.method == 'POST':
-        data = request.get_json()
-        dish = Menu(title=data['title'], )
 
+    elif request.method == 'POST':
+        def get_status(time):
+            if time is not None:
+                status = "Expectation"
+            else:
+                status = "Done"
+            return status
+
+        data = request.get_json()
+        status_time = datetime.now()
+        dish = Menu(title=data['title'],
+                    description=data['description'],
+                    status=get_status(status_time),
+                    status_time=status_time,
+                    price=data['price'])
+        repository.create_dish(dish)
+        return {"status": "dish created"}, 201
+
+
+@app.route('/menu/<int:id>', methods=['DELETE'])
+def delete_dish(id):
+    repository.delete_dish(id)
+    return {"status": "dish deleted"}, 200
 
 
 @app.route('/tables', methods=['GET', 'POST']) #Nosir
