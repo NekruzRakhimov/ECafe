@@ -1,5 +1,8 @@
 from flask import jsonify, Blueprint, request
-import repository
+from sqlalchemy.orm import Session
+
+from repository import Repository
+from ECafe.models import Menu
 
 app = Blueprint('routes', __name__)
 
@@ -30,9 +33,21 @@ def users():
 @app.route('/menu', methods=['GET', 'POST']) # Sasha
 def menu():
     if request.method == 'GET':
-        pass
-    else:
-        pass
+        session = Session
+        repository = Repository(session)
+        dishes = repository.get_menu()
+        serialized_dishes = []
+
+        for dish in dishes:
+            dish_dict = dish.__dict__
+            del dish_dict["_sa_instance_state"]
+            serialized_dishes.append(dish_dict)
+
+        return {"menu": serialized_dishes}, 200
+    elif request.method == 'POST':
+        data = request.get_json()
+        dish = Menu(title=data['title'], )
+
 
 
 @app.route('/tables', methods=['GET', 'POST']) #Nosir
