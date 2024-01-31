@@ -12,6 +12,7 @@ def index():
 @app.route('/orders', methods=["GET", "POST"]) #Nosir
 def order_control():
     if request.method == 'GET':
+        
         pass
 
     else:
