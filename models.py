@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Float, ForeignKey
 from sqlalchemy.orm import relationship, DeclarativeBase
 from connection import engine
 
+
 # создаем базовый класс для моделей
 class Base(DeclarativeBase):
     pass
