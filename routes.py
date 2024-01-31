@@ -7,15 +7,6 @@ from repository import Repository, sessionmaker
 app = Blueprint('routes', __name__)
 
 
-# SessionClass = sessionmaker(bind=engine)
-# def get_session():
-#     session = SessionClass()
-#     return session
-#
-#
-# repository = Repository(get_session())
-
-
 @app.route('/', methods=["GET"])
 def index():
     return jsonify({"status": "server is up and running..."}), 200
@@ -32,12 +23,6 @@ def order_control():
 
 
 # Muhammad ---------------------------------------------------------------------------------------
-@app.route('/users', methods=['GET', 'POST'])  # Muhammad
-def users():
-    if request.method == 'GET':
-        pass
-    else:
-        pass
 
 
 @app.route('/users', methods=['GET', 'POST'])
