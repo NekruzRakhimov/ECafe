@@ -24,7 +24,6 @@ def add_personal(db, job_title, salary, first_name, last_name, age, status):
     except Exception as e:
         logging.error(f"ERRPR is: {e}")
         return str(e)
-add_personal(get_session(), '')
 
 def delete_personal(session, personal_id):
     personal = session.query(Personal).filter_by(id=personal_id).first()
