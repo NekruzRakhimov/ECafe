@@ -1,4 +1,3 @@
-from datetime import datetime
 from flask import jsonify, Blueprint, request
 from ECafe.models import Menu
 import repository

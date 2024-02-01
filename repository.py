@@ -1,9 +1,7 @@
-from flask import jsonify
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from ECafe.connection import engine
 from models import Menu
-from datetime import datetime
 
 
 def get_menu():
