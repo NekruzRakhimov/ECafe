@@ -1,7 +1,12 @@
 from flask import jsonify, Blueprint, request
+<<<<<<< HEAD
 from sqlalchemy.orm import Session
 from repository import get_all_personal, add_personal, delete_personal, set_personal
 from connection import get_session
+=======
+import repository
+from repository import *
+>>>>>>> 5ec9b3c170a64e87d78e839cc4fc42e9dbbfa517
 
 app = Blueprint('routes', __name__)
 
@@ -14,7 +19,25 @@ def index():
     return "Raising the server"
 
 
+<<<<<<< HEAD
 @app.route('/users', methods=['GET', 'POST'])
+=======
+@app.route('/orders', methods=["GET", "POST"])  # Nosir
+def order_control():
+    if request.method == 'GET':
+        pass
+
+    else:
+        data = request.get_json()
+        try:
+            orders_add(data['menu'], data['personal_id'], data['table_id'])
+            return {'status': 'Success'}, 201
+        except:
+            return {'status': 'Something went wrong please check your data and send back.'}, 404
+
+
+@app.route('/users', methods=['GET', 'POST'])  # Muhammad
+>>>>>>> 5ec9b3c170a64e87d78e839cc4fc42e9dbbfa517
 def users():
     session = get_session()
     if request.method == 'GET':
@@ -41,6 +64,7 @@ def users():
         return jsonify({"error": "Method Not Allowed"}), 405
 
 
+<<<<<<< HEAD
 @app.route('/users/<int:personal_id>', methods=['DELETE'])
 def delete_personal_route(personal_id):
     session = get_session()
@@ -60,3 +84,19 @@ def set_personal_role(personal_id):
     if updated_personal:
         return jsonify({"message": f"Role for Personal with id {personal_id} set to {new_role}."})
     return jsonify({"error": f"Personal with id {personal_id} not found."}), 404
+=======
+@app.route('/menu', methods=['GET', 'POST'])  # Sasha
+def menu():
+    if request.method == 'GET':
+        pass
+    else:
+        pass
+
+
+@app.route('/tables', methods=['GET', 'POST'])  # Nosir
+def tables():
+    if request.method == 'GET':
+        pass
+    else:
+        pass
+>>>>>>> 5ec9b3c170a64e87d78e839cc4fc42e9dbbfa517
