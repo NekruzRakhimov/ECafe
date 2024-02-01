@@ -2,6 +2,9 @@ from flask import jsonify
 from sqlalchemy.orm import Session
 from models import Personal
 from datetime import datetime
+from connection import engine
+from models import *
+from sqlalchemy import and_
 
 import logging
 
@@ -41,7 +44,6 @@ def set_personal(session, personal_id, new_role):
         return personal
     else:
         return "The data has not been updated"
-=======
 
 '----------start Orders-------------'
 # adding orders to data
