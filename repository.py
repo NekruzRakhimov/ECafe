@@ -2,7 +2,7 @@ from flask import jsonify
 from sqlalchemy.orm import Session
 from models import Personal
 from datetime import datetime
-from connection import engine
+from connection import engine, get_session
 from models import *
 from sqlalchemy import and_
 
@@ -24,7 +24,7 @@ def add_personal(db, job_title, salary, first_name, last_name, age, status):
     except Exception as e:
         logging.error(f"ERRPR is: {e}")
         return str(e)
-
+add_personal(get_session(), '')
 
 def delete_personal(session, personal_id):
     personal = session.query(Personal).filter_by(id=personal_id).first()
