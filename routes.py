@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import jsonify, Blueprint, request
 import repository
 from ECafe.models import Menu
+from connection import get_session
 
 app = Blueprint('routes', __name__)
 
@@ -62,8 +63,16 @@ def menu():
 
 @app.route('/menu/<int:id>', methods=['DELETE'])
 def delete_dish(id):
-    repository.delete_dish(id)
-    return {"status": "dish deleted"}, 200
+    session = get_session()
+    deleted_menu = repository.delete_dish(session, id)
+    if deleted_menu:
+        return jsonify({"message": f"Personal with id {id} deleted successfully."}), 200
+    return jsonify({"error": f"Personal with id {id} not found."}), 404
+
+
+
+
+
 
 
 @app.route('/tables', methods=['GET', 'POST']) #Nosir

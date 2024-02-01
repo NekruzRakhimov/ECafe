@@ -16,8 +16,8 @@ def create_dish(dish):
         db.commit()
 
 
-def delete_dish(id):
+def delete_dish(session, _id):
     with Session(autoflush=False, bind=engine) as db:
-        dish = db.query(Menu).filter(Menu.id == id).first()
-        db.delete(dish)
-        db.commit()
+        dish = session.query(Menu).filter(id == _id).first()
+        session.delete(dish)
+        session.commit()
