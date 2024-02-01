@@ -46,7 +46,7 @@ class TableManagement(Base):
     table_number = Column(Integer, nullable=False)
     personal_id = Column(Integer, ForeignKey('personal.id'))
     personal = relationship("Personal", backref="table_management")
-    is_deleted = Column(Boolean, default=False, nullable=False)
+    is_deleted = Column(Boolean, default=False)
 
     def __repr__(self):
         return f"<TableManagement(id={self.id}, table_number={self.table_number}, personal_id={self.personal_id})>"
@@ -55,18 +55,18 @@ class TableManagement(Base):
 class OrderManagement(Base):
     __tablename__ = 'order_management'
     id = Column(Integer, primary_key=True)
-    order_id = Column(Integer, unique=True)
+    order_id = Column(Integer, unique=True, nullable=False)
     menu_id = Column(Integer, ForeignKey('menu.id'), nullable=False)
-    amount = Column(Integer, nullable=False)
-    price = Column(Integer, nullable=False)
-    total = Column(Integer, nullable=False)
+    amount = Column(Integer, )
+    price = Column(Integer, )
+    total = Column(Integer, )
     order_status = Column(String(50), nullable=False)
     dish_status = Column(String(50), nullable=False)
     table_management_id = Column(Integer, ForeignKey('table_management.id'), nullable=False)
     personal_id = Column(Integer, ForeignKey('personal.id'), nullable=False)
     menu = relationship("Menu", backref="order_management")
     created_at = Column(DateTime)
-    is_deleted = Column(Boolean, default=False, nullable=False)
+    is_deleted = Column(Boolean, default=False)
 
     def __repr__(self):
         return (f"<OrderManagement(id={self.id}, order_status={self.order_status}, dish_status={self.dish_status}"
