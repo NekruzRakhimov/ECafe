@@ -1,13 +1,14 @@
+from flask import jsonify
 from sqlalchemy import and_
-from models import Menu, Personal, OrderManagement, TableManagement
-from connection import engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import Session
+from ECafe.connection import engine
+from models import Menu
 from datetime import datetime
 
 
 def get_menu():
     with Session(autoflush=False, bind=engine) as db:
-        return db.query(Menu).all()
+        return db.query(Menu).filter(is_deleted == False).all()
 
 
 def create_dish(dish):
@@ -16,8 +17,13 @@ def create_dish(dish):
         db.commit()
 
 
-def delete_dish(session, _id):
+def delete_dish(_id):
     with Session(autoflush=False, bind=engine) as db:
-        dish = session.query(Menu).filter(id == _id).first()
-        session.delete(dish)
-        session.commit()
+        dish = db.query(Menu).filter(and_(id == _id, is_deleted == False)).first()
+        if dish:
+            dish.is_deleted = True
+            db.add(dish)
+            db.commit()
+        else:
+            raise ValueError("Personal data not found")
+

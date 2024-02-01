@@ -1,37 +1,18 @@
 from datetime import datetime
-
 from flask import jsonify, Blueprint, request
-import repository
 from ECafe.models import Menu
 from connection import get_session
+import repository
 
 app = Blueprint('routes', __name__)
 
 
-@app.route('/', methods=["GET"])
+@app.route('/')
 def index():
-    return jsonify({"status": "server is up and running..."}), 200
+    return "Raising the server"
 
 
-@app.route('/orders', methods=["GET", "POST"]) #Nosir
-def order_control():
-    if request.method == 'GET':
-        
-        pass
-
-    else:
-        pass
-
-
-@app.route('/users', methods=['GET', 'POST']) #Muhammad
-def users():
-    if request.method == 'GET':
-        pass
-    else:
-        pass
-
-
-@app.route('/menu', methods=['GET', 'POST']) # Sasha
+@app.route('/menu', methods=['GET', 'POST'])  # Sasha
 def menu():
     if request.method == 'GET':
         dishes = repository.get_menu()
@@ -63,21 +44,8 @@ def menu():
 
 @app.route('/menu/<int:id>', methods=['DELETE'])
 def delete_dish(id):
-    session = get_session()
-    deleted_menu = repository.delete_dish(session, id)
+    deleted_menu = repository.delete_dish(id)
     if deleted_menu:
         return jsonify({"message": f"Personal with id {id} deleted successfully."}), 200
     return jsonify({"error": f"Personal with id {id} not found."}), 404
 
-
-
-
-
-
-
-@app.route('/tables', methods=['GET', 'POST']) #Nosir
-def tables():
-    if request.method == 'GET':
-        pass
-    else:
-        pass
