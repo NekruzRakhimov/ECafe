@@ -1,34 +1,24 @@
 from flask import jsonify, Blueprint, request
-from sqlalchemy.orm import sessionmaker
-import repository
-from connection import engine
-from repository import Repository, sessionmaker
+from sqlalchemy.orm import Session
+from repository import get_all_personal, add_personal, delete_personal, set_personal
+from connection import get_session
 
 app = Blueprint('routes', __name__)
 
 
-@app.route('/', methods=["GET"])
+# def get_session():
+#     return Session()
+
+@app.route('/')
 def index():
-    return jsonify({"status": "server is up and running..."}), 200
-
-
-@app.route('/orders', methods=["GET", "POST"])  # Nosir
-def order_control():
-    if request.method == 'GET':
-
-        pass
-
-    else:
-        pass
-
-
-# Muhammad ---------------------------------------------------------------------------------------
+    return "Raising the server"
 
 
 @app.route('/users', methods=['GET', 'POST'])
 def users():
+    session = get_session()
     if request.method == 'GET':
-        all_personal = repository.get_all_personal()
+        all_personal = get_all_personal(session)
         personal_json = [
             {"id": person.id, "job_title": person.job_title, "salary": person.salary, "first_name": person.first_name,
              "last_name": person.last_name, "age": person.age, "status": person.status,
@@ -44,17 +34,17 @@ def users():
         age = data.get('age')
         status = data.get('status')
 
-        personal = repository.add_personal(job_title, salary, first_name, last_name, age, status)
-        return jsonify({"id": personal.id, "job_title": personal.job_title,
-                        "first_name": personal.first_name, "last_name": personal.last_name,
-                        "age": personal.age}), 201
-
-    return jsonify({"error": "Invalid request method"}), 400
+        personal = add_personal(session, job_title, salary, first_name, last_name, age, status)
+        print("PERSON: ", personal)
+        return data
+    else:
+        return jsonify({"error": "Method Not Allowed"}), 405
 
 
 @app.route('/users/<int:personal_id>', methods=['DELETE'])
-def delete_personal(personal_id):
-    deleted_personal = repository.delete_personal(personal_id)
+def delete_personal_route(personal_id):
+    session = get_session()
+    deleted_personal = delete_personal(session, personal_id)
     if deleted_personal:
         return jsonify({"message": f"Personal with id {personal_id} deleted successfully."})
     return jsonify({"error": f"Personal with id {personal_id} not found."}), 404
@@ -62,28 +52,11 @@ def delete_personal(personal_id):
 
 @app.route('/users/<int:personal_id>/role', methods=['PATCH'])
 def set_personal_role(personal_id):
+    session = get_session()
     data = request.get_json()
     new_role = data.get('role')
 
-    updated_personal = repository.set_personal_role(personal_id, new_role)
+    updated_personal = set_personal(session, personal_id, new_role)
     if updated_personal:
         return jsonify({"message": f"Role for Personal with id {personal_id} set to {new_role}."})
     return jsonify({"error": f"Personal with id {personal_id} not found."}), 404
-
-
-# Muhammad ---------------------------------------------------------------------------------------
-
-@app.route('/menu', methods=['GET', 'POST'])  # Sasha
-def menu():
-    if request.method == 'GET':
-        pass
-    else:
-        pass
-
-
-@app.route('/tables', methods=['GET', 'POST'])  # Nosir
-def tables():
-    if request.method == 'GET':
-        pass
-    else:
-        pass
