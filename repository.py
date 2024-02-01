@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from models import Personal
 from datetime import datetime
 
-<<<<<<< HEAD
 import logging
 
 
@@ -96,4 +95,3 @@ def orders_actual(_personal_id=''):
 orders_add([{'menu_id': 1, 'amount': 3}], 0, 0)
 print(orders_actual())
 '----------end Orders--------------'
->>>>>>> 5ec9b3c170a64e87d78e839cc4fc42e9dbbfa517
